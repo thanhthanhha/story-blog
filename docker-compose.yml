@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      args:
+          - BUILD_PROGRESS=plain
+    command: bash -c 'npm start'
+    expose:
+      - 4001
+    env_file:
+      - ./backend/.env
+    networks:
+      - react_network
+    container_name: backend
+  frontend:
+    build: 
+      context: ./frontend
+      args:
+          - BUILD_PROGRESS=plain
+    command: bash -c 'npm start'
+    expose:
+      - 3000
+    env_file:
+      - ./frontend/.env
+    networks:
+      - react_network
+    container_name: frontend
+    depends_on:
+      - backend
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/usr/src/app/static
+      - media_volume:/usr/src/app/media
+    ports:
+      - 80:80
+    depends_on:
+      - web
+    environment:
+      - WEB_NAME=value
+    networks:
+      - react_network
+
+networks:
+  react_network:
+
