@@ -6,7 +6,7 @@ services:
       context: ./backend
       args:
           - BUILD_PROGRESS=plain
-    command: bash -c 'npm start'
+    command: npm start
     expose:
       - 4001
     env_file:
@@ -19,7 +19,7 @@ services:
       context: ./frontend
       args:
           - BUILD_PROGRESS=plain
-    command: bash -c 'npm start'
+    command: npm start
     expose:
       - 3000
     env_file:
@@ -37,7 +37,7 @@ services:
     ports:
       - 80:80
     depends_on:
-      - web
+      - frontend
     environment:
       - WEB_NAME=value
     networks:
